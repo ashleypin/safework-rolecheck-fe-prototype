@@ -1,0 +1,147 @@
+# Login Integration
+
+## Req Test Data
+
+### 1. Workplaces
+### Create Construction Site A
+POST http://localhost:3000/workplaces/
+Content-Type: application/json
+
+{
+  "name": "Construction Site A",
+  "location": "Sydney CBD, NSW"
+}
+
+### Create Construction Site B  
+POST http://localhost:3000/workplaces/
+Content-Type: application/json
+
+{
+  "name": "Construction Site B", 
+  "location": "Parramatta, NSW"
+}
+
+### 2. Test Users (Use real workplace IDs from step 1)
+### Create Ashley (User role)
+POST http://localhost:3000/users/
+Content-Type: application/json
+
+{
+  "name": "Ashley",
+  "email": "ashley@safework.com",
+  "role": "user",
+  "workplaceId": "685a1d8d71164ca1a64a34bf",
+  "password": "ashley123"
+}
+
+### Create Lachlan (Foreman role)
+POST http://localhost:3000/users/
+Content-Type: application/json
+
+{
+  "name": "Lachlan",
+  "email": "lachlan@safework.com", 
+  "role": "foreman",
+  "workplaceId": "685a1d8d71164ca1a64a34bf",
+  "password": "lachlan123"
+}
+
+### Create Alex (User role)
+POST http://localhost:3000/users/
+Content-Type: application/json
+
+{
+  "name": "Alex",
+  "email": "alex@safework.com",
+  "role": "user", 
+  "workplaceId": "685a1d9571164ca1a64a34c1",
+  "password": "alex123"
+}
+
+### 3. Test Incidents (Use REAL user/workplace IDs)
+### Incident 1 - Reported by Ashley
+POST http://localhost:3000/incidents/
+Content-Type: application/json
+
+{
+  "title": "Slip hazard on wet floor",
+  "description": "Water leak from pipe causing slippery surface near entrance. Workers could slip and injure themselves.",
+  "riskLevel": "Medium",
+  "reportedBy": "685a1dea71164ca1a64a34c3",
+  "workplaceId": "685a1d8d71164ca1a64a34bf",
+  "status": "Open",
+  "createdAt": ""
+}
+
+### Incident 2 - Reported by Alex
+POST http://localhost:3000/incidents/
+Content-Type: application/json
+
+{
+  "title": "Loose scaffolding",
+  "description": "Scaffolding on level 3 is not properly secured. Multiple bolts are loose.",
+  "riskLevel": "High", 
+  "reportedBy": "685a1e9e71164ca1a64a34c9",
+  "workplaceId": "685a1d9571164ca1a64a34c1",
+  "status": "In Progress",
+  "createdAt": ""
+}
+
+### Incident 3 - Reported by Ashley
+POST http://localhost:3000/incidents/
+Content-Type: application/json
+
+{
+  "title": "Missing safety signage",
+  "description": "No warning signs around excavation area. Workers may not be aware of hazard.",
+  "riskLevel": "Low",
+  "reportedBy": "685a1dea71164ca1a64a34c3",
+  "workplaceId": "685a1d8d71164ca1a64a34bf",
+  "status": "Resolved",
+  "createdAt": ""
+}
+
+Test Credentials for FE Login
+Ashley (User)
+* Email: ashley@safework.com
+* Password: ashley123
+Lachlan (Foreman)
+* Email: lachlan@safework.com
+* Password: lachlan123
+Alex (User)
+* Email: alex@safework.com
+* Password: alex123
+
+Testing Sequence
+1: Backend API Testing
+1. Start MongoDB and backend server
+2. Create workplaces using REST client (save the _id values)
+3. Create users using the workplace IDs from step 2 (save user _id values)
+4. Create incidents using the user/workplace IDs
+5. Test login endpoint with user IDs and passwords
+6. Verify JWT tokens are returned correctly
+
+2: Frontend Integration Testing
+1. Start frontend Vite dev server
+2. Test login with each user (Ashley, Lachlan, Alex)
+3. Verify dashboard loads with appropriate data
+4. Test navigation between pages
+5. Test incident creation
+6. Test role-based features
+
+Expected Database Structure After Setup
+Workplaces Collection:
+* Construction Site A (Sydney CBD)
+* Construction Site B (Parramatta)
+Users Collection:
+* Ashley (user role, Site A)
+* Lachlan (foreman role, Site A)
+* Alex (user role, Site B)
+
+Verification Commands
+### Check if everything is set up correctly
+GET http://localhost:3000/workplaces/
+###
+GET http://localhost:3000/users/
+###  
+GET http://localhost:3000/incidents/
